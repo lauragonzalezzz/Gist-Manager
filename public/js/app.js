@@ -19,15 +19,40 @@ const GistList = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data){
-        this.setState({gistArr: data})
+        this.loadGistContent(data);
+        this.setState({gistArr: gistContentArr})
       }.bind(this),
       error: function(xhr, status, err){
-        console.err(this.props.publicGistUrl, status, err.toString());
+        console.log(this.props.publicGistUrl, status, err.toString());
       }.bind(this)
     });
   },
+  loadGistContent: function(gists){
+    var gistContentArr = gists.map(function(gistObjs){
+      var content;
+      $.ajax({
+        url: gistObjs.url,
+        dataType: 'json',
+        cache: false,
+        success: function(gistContent){
+          content = gistContent;
+          console.log(content);
+        },
+        error: function(xhr, status, err){
+          console.log(err.toString());
+        }
+      });
+      return {
+        id: gistObjs.id,
+        url: gistObjs.url,
+        description: gistObjs.description,
+        content: content
+      }
+    });
+    return gistContentArr;
+  },
   componentDidMount: function(){
-    this.loadDataFromGitHub()
+    this.loadDataFromGitHub();
   },
   render: function(){
     var gistListNode = this.state.gistArr.map(function(gistItem){
@@ -35,7 +60,8 @@ const GistList = React.createClass({
         <Gist
           key={gistItem.id}
           desc={gistItem.description}
-          url={gistItem.url}>
+          url={gistItem.url}
+          content={gistItem.content}>
         </Gist>
       )
     })
@@ -56,6 +82,7 @@ const Gist = React.createClass({
       <div className="gistItem">
         <h4>{this.props.desc}</h4>
         <p>{this.props.url}</p>
+        <p>{this.props.content}</p>
       </div>
     )
   }
@@ -65,3 +92,21 @@ ReactDOM.render(
   <GistList publicGistUrl="https://api.github.com/gists/public"/>,
   document.getElementById('content')
 );
+
+
+// //do another request for content
+// var invGistContentArr = data.map(function(indvGistItem){
+//   console.log(indvGistItem.url);
+//   $.ajax({
+//     url: indvGistItem.url,
+//     dataType: 'json',
+//     cache: false,
+//     success: function(data){
+//       return {
+//         id: indvGistItem.id,
+//         url: indvGistItem.url,
+
+//       }
+//     }
+//   })
+// })
