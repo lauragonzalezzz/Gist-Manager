@@ -5,10 +5,12 @@ const express = require('express'),
    bodyParser = require('body-parser'),
      passport = require('passport'),
       // session = require('express-session'),
-LocalStrategy = require('passport-local').Strategy;
+OAuthStrategy = require('passport-oauth').OAuthStrategy;
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
+
+app.get()
 
 app.listen(4321, () => {
   console.log('Server is listening on port 4321');
