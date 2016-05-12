@@ -1,12 +1,6 @@
 'use strict'
 
-// var gists = [
-//   {id: 1, description: "description here!", url: "www.1234.com", content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae nihil, assumenda expedita. Quod excepturi itaque numquam nesciunt, deleniti tempore. Eaque est, soluta iusto dolor doloribus alias labore reprehenderit velit odit?"},
-//   {id: 2, description: "second gist!", url: "www.1234.com", content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae nihil, assumenda expedita. Quod excepturi itaque numquam nesciunt, deleniti tempore. Eaque est, soluta iusto dolor doloribus alias labore reprehenderit velit odit?"},
-//   {id: 3, description: "third!", url: "www.1234.com", content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae nihil, assumenda expedita. Quod excepturi itaque numquam nesciunt, deleniti tempore. Eaque est, soluta iusto dolor doloribus alias labore reprehenderit velit odit?"},
-//   {id: 4, description: "last gist!", url: "www.1234.com", content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae nihil, assumenda expedita. Quod excepturi itaque numquam nesciunt, deleniti tempore. Eaque est, soluta iusto dolor doloribus alias labore reprehenderit velit odit?"}
-// ]
-
+//LIST
 const GistList = React.createClass({
     getInitialState: function(){
     return {
@@ -76,6 +70,7 @@ const GistList = React.createClass({
   }
 });
 
+//INDIVIDUAL GIST
 const Gist = React.createClass({
   render: function(){
     return (
@@ -88,25 +83,8 @@ const Gist = React.createClass({
   }
 })
 
+
 ReactDOM.render(
   <GistList publicGistUrl="https://api.github.com/gists/public"/>,
   document.getElementById('content')
 );
-
-
-// //do another request for content
-// var invGistContentArr = data.map(function(indvGistItem){
-//   console.log(indvGistItem.url);
-//   $.ajax({
-//     url: indvGistItem.url,
-//     dataType: 'json',
-//     cache: false,
-//     success: function(data){
-//       return {
-//         id: indvGistItem.id,
-//         url: indvGistItem.url,
-
-//       }
-//     }
-//   })
-// })
