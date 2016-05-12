@@ -10,7 +10,7 @@
 const GistList = React.createClass({
     getInitialState: function(){
     return {
-      GistArr: []
+      gistArr: []
     }
   },
   loadDataFromGitHub: function(){
@@ -19,13 +19,7 @@ const GistList = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data){
-        console.log('data',data);
-
-
-
-
-
-        this.setState({gistData: data})
+        this.setState({gistArr: data})
       }.bind(this),
       error: function(xhr, status, err){
         console.err(this.props.publicGistUrl, status, err.toString());
@@ -36,14 +30,13 @@ const GistList = React.createClass({
     this.loadDataFromGitHub()
   },
   render: function(){
-    var gistListNode = this.props.gistData.map(function(gistItem){
-    console.log(gistItem);
+    var gistListNode = this.state.gistArr.map(function(gistItem){
       return (
-        <RedditItem
+        <Gist
           key={gistItem.id}
           desc={gistItem.description}
           url={gistItem.url}>
-        </RedditItem>
+        </Gist>
       )
     })
     return (
@@ -51,7 +44,7 @@ const GistList = React.createClass({
         <h1>Gist Manager</h1>
         <h2>Gist List</h2>
         <p>By Laura</p>
-        <Gist gistData={this.state.gistData} />
+        {gistListNode}
       </div>
     )
   }
@@ -61,12 +54,12 @@ const Gist = React.createClass({
   render: function(){
     return (
       <div className="gistItem">
-        <h4>HELLO</h4>
+        <h4>{this.props.desc}</h4>
+        <p>{this.props.url}</p>
       </div>
     )
   }
 })
-
 
 ReactDOM.render(
   <GistList publicGistUrl="https://api.github.com/gists/public"/>,
