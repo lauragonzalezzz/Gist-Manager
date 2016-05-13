@@ -4,8 +4,24 @@ const    Router = ReactRouter.Router,
            Link = ReactRouter.Link,
  browserHistory = ReactRouter.browserHistory;
 
-var currentState = window.location.hash.substring(1);
-localStorage.gistAuthToken = window.location.hash.substring(1);
+var token = window.location.hash.substring(1);
+localStorage.gistAuthToken = token;
+
+//GET GISTS
+const GetUserGistUrl = React.createClass({
+  getInitialState: function(){
+    return {
+      userObj = {}
+    }
+  },
+  getUserInfo: function(){
+    $.ajax.({
+      url: "https://api.github.com/user?access_token=" + token,
+      X-OAuth-Scopes: "gist",
+
+    })
+  }
+})
 
 //LIST
 const GistList = React.createClass({
