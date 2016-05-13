@@ -1,4 +1,11 @@
 'use strict'
+const    Router = ReactRouter.Router,
+          Route = ReactRouter.Route,
+           Link = ReactRouter.Link,
+ browserHistory = ReactRouter.browserHistory;
+
+var currentState = window.location.hash.substring(1);
+localStorage.gistAuthToken = window.location.hash.substring(1);
 
 //LIST
 const GistList = React.createClass({
@@ -13,38 +20,40 @@ const GistList = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data){
-        this.loadGistContent(data);
-        this.setState({gistArr: gistContentArr})
-      }.bind(this),
-      error: function(xhr, status, err){
-        console.log(this.props.publicGistUrl, status, err.toString());
+        console.log(data);
+        // this.loadGistContent(data);
+        // this.setState({gistArr: JSON.parse(data)})
       }.bind(this)
+      // error: function(xhr, status, err){
+      //   console.log(xhr, status, err.toString());
+      // }.bind(this)
     });
   },
-  loadGistContent: function(gists){
-    var gistContentArr = gists.map(function(gistObjs){
-      var content;
-      $.ajax({
-        url: gistObjs.url,
-        dataType: 'json',
-        cache: false,
-        success: function(gistContent){
-          content = gistContent;
-          console.log(content);
-        },
-        error: function(xhr, status, err){
-          console.log(err.toString());
-        }
-      });
-      return {
-        id: gistObjs.id,
-        url: gistObjs.url,
-        description: gistObjs.description,
-        content: content
-      }
-    });
-    return gistContentArr;
-  },
+  // this.props.publicGistUrl
+  // loadGistContent: function(gists){
+  //   var gistContentArr = gists.map(function(gistObjs){
+  //     var content;
+  //     $.ajax({
+  //       url: gistObjs.url,
+  //       dataType: 'json',
+  //       cache: false,
+  //       success: function(gistContent){
+  //         content = gistContent;
+  //         console.log(content);
+  //       },
+  //       error: function(xhr, status, err){
+  //         console.log(err.toString());
+  //       }
+  //     });
+  //     return {
+  //       id: gistObjs.id,
+  //       url: gistObjs.url,
+  //       description: gistObjs.description,
+  //       content: content
+  //     }
+  //   });
+  //   return gistContentArr;
+  // },
   componentDidMount: function(){
     this.loadDataFromGitHub();
   },
@@ -87,4 +96,10 @@ const Gist = React.createClass({
 ReactDOM.render(
   <GistList publicGistUrl="https://api.github.com/gists/public"/>,
   document.getElementById('content')
+  // (<Router history={browserHistory}>
+  //   <Route path='/' component={GistList}>
+  //   </Route>
+  // </Router>),
+  // document.getElementById('content')
+
 );
