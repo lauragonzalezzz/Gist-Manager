@@ -6,26 +6,70 @@ const    Router = ReactRouter.Router,
 
 var token = window.location.hash.substring(1);
 localStorage.gistAuthToken = token;
+var userID;
+var userGists;
 
 //GET GISTS
 const GetUserGistUrl = React.createClass({
   getInitialState: function(){
     return {
-      userObj = {}
+      userObj: []
     }
   },
   getUserInfo: function(){
-    $.ajax.({
+    $.ajax({
       url: "https://api.github.com/user?access_token=" + token,
-      X-OAuth-Scopes: "gist",
-
+      dataType: 'json',
+      cache: false,
+      success: function(data){
+        console.log(data);
+        userID = data.login;
+        this.getUserGist(userID);
+        this.setState({userGists : userGists})
+      }.bind(this),
+      error: function(xhr, status, err){
+        console.log(xhr, status, err.toString());
+      }.bind(this)
     })
+  },
+  componentDidMount: function(){
+    this.getUserInfo();
+  },
+  getUserGist: function(){
+    $.ajax({
+      url: "https://api.github.com/users/" + userID + "/gists",
+      headers: {Authorization: "token " + token},
+      dataType: 'json',
+      cache: false,
+      success: function(gistData){
+        userGists = gistData.map(function(gist){
+          return {
+            gistID: gist.id,
+            gistURL: gist.url,
+            files: gist.files,
+            status: gist.public,
+            description: gist.description
+          }
+        });
+        console.log('userGists',userGists);
+        var content;
+
+      },
+      error: function(xhr, status, err) {
+        console.log(xhr, status, err.toString());
+      }
+    });
+  },
+  render: function(){
+    return (
+      <p>{this.state.userObj.gists_url}</p>
+    )
   }
-})
+});
 
 //LIST
 const GistList = React.createClass({
-    getInitialState: function(){
+  getInitialState: function(){
     return {
       gistArr: []
     }
@@ -108,14 +152,16 @@ const Gist = React.createClass({
   }
 })
 
-
 ReactDOM.render(
-  <GistList publicGistUrl="https://api.github.com/gists/public"/>,
-  document.getElementById('content')
+  // <GistList publicGistUrl="https://api.github.com/gists/public"/>,
+  // document.getElementById('content')
   // (<Router history={browserHistory}>
   //   <Route path='/' component={GistList}>
   //   </Route>
   // </Router>),
   // document.getElementById('content')
-
+  <GetUserGistUrl />,
+  document.getElementById('content')
 );
+
+
