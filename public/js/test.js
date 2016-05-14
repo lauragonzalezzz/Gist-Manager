@@ -12,7 +12,8 @@ localStorage.gistAuthToken = token;
 const User = React.createClass({
   getInitialState: function(){
     return {
-      username: ""
+      username: "",
+      gistData: []
     }
   },
   getUserInfo: function(){
@@ -24,7 +25,6 @@ const User = React.createClass({
          var username = data.login;
           // name = data.name;
           // avatarUrl: data.avatar_url;
-          // gistsUrl: data.gists_url;
         this.setState({username : username})
         this.getGistInfo();
       }.bind(this),
@@ -44,45 +44,29 @@ const User = React.createClass({
       cache: false,
       success: function(gistData){
         this.setState({gistData : gistData});
-        // this.getGistContent();
       }.bind(this),
       error: function(xhr, status, err) {
         console.log(xhr, status, err.toString());
       }
     });
   },
-  // getGistContent: function(){
-  //   var content;
-  //   this.state.gistUrls.map(function(url){
-  //     $.ajax({
-  //       url: url,
-  //       headers: {Authorization: "token " + token},
-  //       dataType: 'json',
-  //       cache: false,
-  //       success: function(content){
-  //         content = content;
-  //         console.log(content);
-  //       }.bind(this),
-  //       error: function(xhr, status, err) {
-  //         console.log(xhr, status, err.toString());
-  //       }
-  //     });
-  //   })
-  // },
   render: function(){
+    var self = this;
     console.log(this.state.gistData);
-    // var gistListNode = this.state.gistData.map(function(eachGistData){
-    //   return (
-    //     <Gists
-    //       name={this.state.username}
-    //       url={eachGistData.url}
-    //       desc={eachGistData.description} >
-    //     </Gists>
-    //   )
-    // })
+    var gistListNode = this.state.gistData.map(function(eachGistData){
+      return (
+        <Gists
+          key={eachGistData.id}
+          username={self.state.username}
+          rawURL={eachGistData.url}
+          desc={eachGistData.description} >
+        </Gists>
+      )
+    })
     return (
       <div className="userDashboard">
         <h1>Gist-Manager</h1>
+          {gistListNode}
       </div>
     )
   }
@@ -93,9 +77,9 @@ const Gists = React.createClass({
   render: function(){
     return (
       <div className="gistInitialData">
-        <h1>{this.props.name}</h1>
+        <h1>{this.props.username}</h1>
         <p>{this.props.desc}</p>
-        <p>{this.props.url}</p>
+        <p>{this.props.rawURL}</p>
       </div>
     )
   }
