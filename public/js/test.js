@@ -43,29 +43,46 @@ const User = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(gistData){
-        var gistUrls = [];
-        gistData.map(function(gist){
-          return gistUrls.push(gist.url);
-        });
-        this.setState({gistUrls : gistUrls});
-        this.getGistContent();
+        this.setState({gistData : gistData});
+        // this.getGistContent();
       }.bind(this),
       error: function(xhr, status, err) {
         console.log(xhr, status, err.toString());
       }
     });
   },
-  getGistContent: function(){
-    console.log('this.state.gistUrls',this.state.gistUrls);
-    // this.state.gistUrls.map(function(url){
-
-    // })
-  },
+  // getGistContent: function(){
+  //   var content;
+  //   this.state.gistUrls.map(function(url){
+  //     $.ajax({
+  //       url: url,
+  //       headers: {Authorization: "token " + token},
+  //       dataType: 'json',
+  //       cache: false,
+  //       success: function(content){
+  //         content = content;
+  //         console.log(content);
+  //       }.bind(this),
+  //       error: function(xhr, status, err) {
+  //         console.log(xhr, status, err.toString());
+  //       }
+  //     });
+  //   })
+  // },
   render: function(){
+    console.log(this.state.gistData);
+    // var gistListNode = this.state.gistData.map(function(eachGistData){
+    //   return (
+    //     <Gists
+    //       name={this.state.username}
+    //       url={eachGistData.url}
+    //       desc={eachGistData.description} >
+    //     </Gists>
+    //   )
+    // })
     return (
       <div className="userDashboard">
         <h1>Gist-Manager</h1>
-        <Gists name={this.state.username} />
       </div>
     )
   }
@@ -77,6 +94,8 @@ const Gists = React.createClass({
     return (
       <div className="gistInitialData">
         <h1>{this.props.name}</h1>
+        <p>{this.props.desc}</p>
+        <p>{this.props.url}</p>
       </div>
     )
   }
