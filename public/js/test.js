@@ -10,7 +10,8 @@ Router = require('react-router'),
 
 
 //AUTH TOKEN
-localStorage.gistAuthToken = window.location.hash.substring(1);
+var token = window.location.hash.substring(1)
+localStorage.gistAuthToken = token;
 
 
 
