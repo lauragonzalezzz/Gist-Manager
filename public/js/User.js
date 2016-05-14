@@ -1,6 +1,7 @@
 'use strict';
 
 const User = React.createClass({
+  const token = localStorage.token;
   getInitialState: function(){
     return {
       username: "",
@@ -43,7 +44,6 @@ const User = React.createClass({
   },
   render: function(){
     var self = this;
-    console.log(this.state.gistData);
     var gistListNode = this.state.gistData.map(function(eachGistData){
       return (
         <GistList
