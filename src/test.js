@@ -1,13 +1,10 @@
 'use strict'
-const React = require('react'),
-ReactDom = require('react-dom'),
-Router = require('react-router'),
+const    Router = ReactRouter.Router,
           Route = ReactRouter.Route,
            Link = ReactRouter.Link,
- browserHistory = ReactRouter.browserHistory,
-           User = require('User.js'),
-       GistList = require('GistList.js');
+ browserHistory = ReactRouter.browserHistory;
 
+ import {User} from "./User";
 
 //AUTH TOKEN
 localStorage.gistAuthToken = window.location.hash.substring(1);
