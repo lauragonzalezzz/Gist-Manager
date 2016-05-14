@@ -39,20 +39,16 @@ app.use(session({
 
 //ROUTES
 
+app.get('/auth/github',
+  passport.authenticate('github', {scope : ["user", "gist"]}));
+
 app.get('/return',
   passport.authenticate('github',
   {failureRedirect: "/return"})
   ,((req, res) => {
-    // localStorage.GistAuthToken = req.user.accessToken;
-    // console.log(localStorage.GistAuthToken);
-    // res.send(req.user.accessToken)
     res.redirect('/#' + req.user.accessToken);
   })
 );
-
-// app.get('*', (req, res) => {
-//   passport.authenticate('github', {scope : gist})
-// });
 
 app.listen(4321, () => {
   console.log('Server is listening on port 4321');
